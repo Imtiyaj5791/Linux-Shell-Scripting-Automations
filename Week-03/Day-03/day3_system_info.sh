@@ -12,7 +12,7 @@ echo "          SYSTEM HEALTH REPORT            "
 echo "=========================================="
 
 # 1. Hostname (System ka naam)
-echo "➜ Hostname: \$(hostname)"
+echo "➜ Hostname: $(hostname)"
 
 # 2. System Uptime (System kab se chal raha hai)
 echo "➜ System Uptime: \$(uptime -p 2>/dev/null || echo 'N/A on Windows Git Bash')"
