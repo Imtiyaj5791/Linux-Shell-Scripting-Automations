@@ -2,21 +2,23 @@
 
 # ====================================================================
 # Script Name: devops_env_backup.sh
-# Description: Automating backup path logging using System & Custom Variables
+# Description: Production-Ready Automation Script with Source & Command
 # ====================================================================
 
-# 1. Custom Variables (User-defined)
+# 1. Variables Definition
 PROJECT_NAME="E-Commerce-App"
-BACKUP_DIR="/var/log/backup"
+SOURCE_DIR="$HOME/Desktop/Linux-Shell-Scripting-Automations/Week-03" # Kahan SE backup lena hai (Hum Week-03 folder ka backup le rahe hain)
+BACKUP_DIR="$HOME/Desktop"                                           # Kahan PAR save karna hai (Desktop par save hoga)
 
-# 2. System Variables (Built-in Linux environment variables)
-# Note: $USER and $HOSTNAME automatically fetch system details
 echo "------------------------------------------------"
-echo "INITIATING BACKUP PROCESS"
+echo "INITIATING BACKUP PROCESS ON SERVER: $HOSTNAME"
 echo "------------------------------------------------"
-echo "Current Execution User : $USER"
-echo "Target Server Hostname : $HOSTNAME"
-echo "Application Name       : $PROJECT_NAME"
-echo "Backup Destination     : $BACKUP_DIR/logs_backup.tar.gz"
+echo "Source Directory    : $SOURCE_DIR"
+echo "Backup Destination  : $BACKUP_DIR/${PROJECT_NAME}_backup.tar.gz"
 echo "------------------------------------------------"
-echo "Status: Backup configuration generated successfully!"
+
+# 2. Asli Action Command (tar) - Yeh real mein data ko compress karega
+# -c (create), -z (gzip compression), -f (file name specification)
+tar -czf "$BACKUP_DIR/${PROJECT_NAME}_backup.tar.gz" "$SOURCE_DIR" 2>/dev/null
+
+echo "Status: Backup successfully created at $BACKUP_DIR/${PROJECT_NAME}_backup.tar.gz"
