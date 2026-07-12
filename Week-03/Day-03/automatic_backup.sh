@@ -1,27 +1,55 @@
 #!/bin/bash
 
-# $1 aur $2 bahar se aane wale arguments hain
-PROJECT_NAME=$1
-ENV_TYPE=$2
+# ====================================================================
+# Script Name:  automatic_backup.sh
+# Description:  Automated directory compression and backup utility.
+# Usage:        ./automatic_backup.sh <source_dir> <backup_dir>
+# Author:       Imtiyaj
+# ====================================================================
 
-echo "=========================================="
-echo "🚀 AUTOMATED DEVOPS DEPLOYMENT TRACKER"
-echo "=========================================="
-echo "➜ Running Script: $0"
-echo "➜ Total Arguments Passed: $#"
-echo "------------------------------------------"
+# Capture positional arguments (Bahar se aane wale raste)
+SOURCE_FOLDER=$1
+BACKUP_DESTINATION=$2
 
-# Agar user ne arguments nahi diye toh script ko warning deni chahiye
-if [ -z "$PROJECT_NAME" ] || [ -z "$ENV_TYPE" ]; then
-    echo "❌ ERROR: Bhai, sahi tarika yeh hai:"
-    echo "👉 Usage: $0 <project_name> <environment>"
-    echo "👉 Example: $0 ecommerce production"
-    echo "=========================================="
+echo "=================================================="
+echo "🚀 SYSTEM INFRASTRUCTURE: AUTOMATED BACKUP SERVICE"
+echo "=================================================="
+echo "➜ Executing Script: $0"
+echo "➜ Total Arguments:  $#"
+echo "--------------------------------------------------"
+
+# 🚨 GUARD 1: Check karo dono raste diye hain ya nahi
+if [ -z "$SOURCE_FOLDER" ] || [ -z "$BACKUP_DESTINATION" ]; then
+    echo "❌ ERROR: Missing required parameters."
+    echo "👉 Usage: $0 <source_directory> <backup_destination_directory>"
+    echo "👉 Example: $0 /var/log /tmp"
+    echo "=================================================="
     exit 1
 fi
 
-echo "🟢 Deploying Project: $PROJECT_NAME"
-echo "🟢 Target Environment: $ENV_TYPE"
-echo "------------------------------------------"
-echo "🎉 [SUCCESS] $PROJECT_NAME successfully tracked in $ENV_TYPE!"
-echo "=========================================="
+# 🚨 GUARD 2: Check karo source folder sach mein server par hai ya nahi
+if [ ! -d "$SOURCE_FOLDER" ]; then
+    echo "❌ ERROR: Source directory '$SOURCE_FOLDER' does not exist."
+    echo "=================================================="
+    exit 1
+fi
+
+# Time ke hisab se unique naam banana
+TIMESTAMP=$(date +%Y-%m-%d_%H-%M-%S)
+BACKUP_FILE="backup_$TIMESTAMP.tar.gz"
+
+echo "📦 Initialization: Creating backup archive..."
+echo "➜ Source Path:      $SOURCE_FOLDER"
+echo "➜ Destination Path: $BACKUP_DESTINATION/$BACKUP_FILE"
+echo "--------------------------------------------------"
+
+# Core Backup Operation (Aapke niyam ke mutabik bina 2>/dev/null ke!)
+tar -czf "$BACKUP_DESTINATION/$BACKUP_FILE" "$SOURCE_FOLDER"
+
+# Verify if the backup file was successfully created
+if [ $? -eq 0 ]; then
+    echo "🎉 [SUCCESS] Backup archive generated successfully."
+else
+    echo "❌ ERROR: Backup operation failed during execution."
+fi
+echo "=================================================="
